@@ -31,18 +31,11 @@ const authRegister = async (req, res) => {
 
 const authLogin = async (req, res) => {
   try {
-    const { email, fullName } = req.body;
+    const { email } = req.body;
 
     let user = await Users.findOne({ where: { email: email } });
 
     let founEmail = user.email === email;
-    let foundName = user.fullName === fullName;
-
-    if (!foundName) {
-      return res.status(404).send({
-        msg: "Full name not found",
-      });
-    }
 
     if (!founEmail) {
       return res.status(404).send({
