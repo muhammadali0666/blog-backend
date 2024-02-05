@@ -4,7 +4,7 @@ const {getOnePosts, getPosts, createPosts, deletePosts} = require("../controller
 const postRouter = Router()
 
 postRouter.get("/posts", getPosts)
-postRouter.get("/posts_one/:id", getOnePosts)
+postRouter.get("/post_one/:id", getOnePosts)
 postRouter.post("/create_post", createPosts)
 postRouter.delete("/delete_posts", deletePosts)
 

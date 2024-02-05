@@ -28,15 +28,27 @@ const getPosts = async (req, res) => {
   results.results = posts.slice(startIndex, endIndex);
   return res.json(results);
 };
-const getOnePosts = () => {};
+const getOnePosts = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const post = await Posts.findOne({ where: { id: id } });
+
+    return res.json(post);
+  } catch (error) {
+    return res.send({
+      message: error.message,
+    });
+  }
+};
 const createPosts = async (req, res) => {
   try {
     const { title, text, img } = req.body;
 
-      await Posts.create({title:title, text:text, img:img});
-      return res.status(200).send({
-        message: "created post",
-      });
+    await Posts.create({ title: title, text: text, img: img });
+    return res.status(200).send({
+      message: "created post",
+    });
   } catch (error) {
     return res.send({
       message: error.message,
