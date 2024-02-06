@@ -55,7 +55,34 @@ const createPosts = async (req, res) => {
     });
   }
 };
-const deletePosts = () => {};
+const deletePosts = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const foundedId = await Posts.findOne({where: {id: id}})
+
+    if(!foundedId){
+      return res.send({
+        message: "post not found"
+      })
+    }
+
+    await Posts.destroy({
+      returning: true,
+      plain: true,
+      where: {
+        id,
+      },
+    });
+    return res.send({
+      msg: "deleted post!",
+    });
+  } catch (err) {
+    return res.send({
+      msg: err.message,
+    });
+  }
+};
 
 module.exports = {
   getPosts,
