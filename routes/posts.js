@@ -6,6 +6,6 @@ const postRouter = Router()
 postRouter.get("/posts", getPosts)
 postRouter.get("/post_one/:id", getOnePosts)
 postRouter.post("/create_post", createPosts)
-postRouter.delete("/delete_posts/:id", deletePosts)
+postRouter.delete("/delete_post/:id", deletePosts)
 
 module.exports = postRouter
