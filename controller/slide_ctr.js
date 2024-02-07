@@ -2,15 +2,22 @@ const { Slides } = require("../model");
 
 Slides.sync({ force: false });
 
-const getSlides = async (req, res) => {
+const getSlides = async (_, res) => {
   const posts = await Slides.findAll();
   return res.json(posts);
 };
 const createSlide = async (req, res) => {
   try {
-    const {  img } = req.body;
+    const { img } = req.body;
+
+    if(!img) {
+      return res.send({
+        message: "Img not found"
+      })
+    }
 
     await Slides.create({img: img });
+
     return res.status(200).send({
       message: "created slide",
     });
