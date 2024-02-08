@@ -1,12 +1,12 @@
-const { Imgs } = require("../model");
+const { Contacts } = require("../model");
 
-Imgs.sync({ force: false });
+Contacts.sync({ force: false });
 
-const getImgs = async (req, res) => {
+const getContacts = async (req, res) => {
   const page = parseInt(req.query.page);
   const limit = parseInt(req.query.limit);
 
-  const imgs = await Imgs.findAll();
+  const imgs = await Contacts.findAll();
 
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
@@ -25,17 +25,17 @@ const getImgs = async (req, res) => {
       limit: limit,
     };
   }
-  results.results = imgs.slice(startIndex, endIndex);
+  results.results = Contacts.slice(startIndex, endIndex);
   return res.json(results);
 };
 
-const createImg = async (req, res) => {
+const createContact = async (req, res) => {
   try {
-    const { img } = req.body;
+    const { name, email, subject, message } = req.body;
 
-    await Imgs.create({ img: img });
+    await Contacts.create({ name, email, subject, message });
     return res.status(200).send({
-      message: "created img",
+      message: "created contact",
     });
   } catch (error) {
     return res.send({
@@ -43,19 +43,19 @@ const createImg = async (req, res) => {
     });
   }
 };
-const deleteImg = async (req, res) => {
+const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const foundedId = await Imgs.findOne({where: {id: id}})
+    const foundedId = await Contacts.findOne({ where: { id: id } });
 
-    if(!foundedId){
+    if (!foundedId) {
       return res.send({
-        message: "img not found"
-      })
+        message: "contact not found",
+      });
     }
 
-    await Imgs.destroy({
+    await Contacts.destroy({
       returning: true,
       plain: true,
       where: {
@@ -63,7 +63,7 @@ const deleteImg = async (req, res) => {
       },
     });
     return res.send({
-      msg: "deleted img!",
+      msg: "deleted contact!",
     });
   } catch (err) {
     return res.send({
@@ -73,7 +73,7 @@ const deleteImg = async (req, res) => {
 };
 
 module.exports = {
-  getImgs,
-  createImg,
-  deleteImg
+  getContacts,
+  createContact,
+  deleteContact,
 };

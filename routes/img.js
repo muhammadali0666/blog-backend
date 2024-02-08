@@ -3,8 +3,8 @@ const {getImgs, createImg, deleteImg} = require("../controller/img_ctr")
 
 const imgRouter = Router()
 
-imgRouter.get("/posts", getImgs)
-imgRouter.post("/create_post", createImg)
-imgRouter.delete("/delete_post/:id", deleteImg)
+imgRouter.get("/img", getImgs)
+imgRouter.post("/create_img", createImg)
+imgRouter.delete("/delete_img/:id", deleteImg)
 
 module.exports = imgRouter

@@ -12,7 +12,7 @@ const createSlide = async (req, res) => {
 
     if(!img) {
       return res.send({
-        message: "Img not found"
+        message: "slide not found"
       })
     }
 
