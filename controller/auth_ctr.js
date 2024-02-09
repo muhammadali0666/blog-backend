@@ -1,5 +1,4 @@
 const { Users } = require("../model");
-// const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 Users.sync({ force: false });
