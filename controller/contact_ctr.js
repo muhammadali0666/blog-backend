@@ -2,31 +2,9 @@ const { Contacts } = require("../model");
 
 Contacts.sync({ force: false });
 
-const getContacts = async (req, res) => {
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
-
-  const imgs = await Contacts.findAll();
-
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-
-  const results = {};
-
-  if (endIndex < imgs.length) {
-    results.next = {
-      page: page + 1,
-      limit: limit,
-    };
-  }
-  if (startIndex > 0) {
-    results.prev = {
-      page: page - 1,
-      limit: limit,
-    };
-  }
-  results.results = Contacts.slice(startIndex, endIndex);
-  return res.json(results);
+const getContacts = async (req, res) => { 
+  const contacts = await Contacts.findAll();
+  return res.json(contacts);
 };
 
 const createContact = async (req, res) => {
