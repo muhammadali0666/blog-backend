@@ -43,6 +43,31 @@ const createImg = async (req, res) => {
     });
   }
 };
+
+const editImg = async (req, res) => {
+  try {
+    const { img } = req.body;
+    const { id } = req.params;
+
+    const updatedImg = await Imgs.update(
+      { img },
+      {
+        returning: true,
+        plain: false,
+        where: {
+          id,
+        },
+      }
+    );
+
+    return res.send(updatedImg.filter((e) => e));
+  } catch (error) {
+    return res.send({
+      message: error.message,
+    });
+  }
+};
+
 const deleteImg = async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,5 +100,6 @@ const deleteImg = async (req, res) => {
 module.exports = {
   getImgs,
   createImg,
+  editImg,
   deleteImg
 };
