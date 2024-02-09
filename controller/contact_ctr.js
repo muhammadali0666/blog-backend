@@ -21,6 +21,29 @@ const createContact = async (req, res) => {
     });
   }
 };
+const editContact = async (req, res) => {
+  try {
+    const { name, email, subject, message } = req.body;
+    const { id } = req.params;
+
+    const updatedContact = await Contacts.update(
+      { name, email, subject, message },
+      {
+        returning: true,
+        plain: false,
+        where: {
+          id,
+        },
+      }
+    );
+
+    return res.send(updatedContact.filter((e) => e));
+  } catch (error) {
+    return res.send({
+      message: error.message,
+    });
+  }
+};
 const deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,5 +76,6 @@ const deleteContact = async (req, res) => {
 module.exports = {
   getContacts,
   createContact,
+  editContact,
   deleteContact,
 };
