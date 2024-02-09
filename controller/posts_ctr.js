@@ -55,16 +55,41 @@ const createPosts = async (req, res) => {
     });
   }
 };
+
+const editPost = async (req, res) => {
+  try {
+    const { title, text, img } = req.body;
+    const { id } = req.params;
+
+    const updatedPost = await Posts.update(
+      { title, text, img },
+      {
+        returning: true,
+        plain: false,
+        where: {
+          id,
+        },
+      }
+    );
+
+    return res.send(updatedPost.filter((e) => e));
+  } catch (error) {
+    return res.send({
+      message: error.message,
+    });
+  }
+};
+
 const deletePosts = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const foundedId = await Posts.findOne({where: {id: id}})
+    const foundedId = await Posts.findOne({ where: { id: id } });
 
-    if(!foundedId){
+    if (!foundedId) {
       return res.send({
-        message: "post not found"
-      })
+        message: "post not found",
+      });
     }
 
     await Posts.destroy({
@@ -88,5 +113,6 @@ module.exports = {
   getPosts,
   getOnePosts,
   createPosts,
+  editPost,
   deletePosts,
 };
