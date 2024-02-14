@@ -9,16 +9,20 @@ const Contacts = sequelize.define("contact", {
   },
 
   name: {
-    type: DataTypes.TEXT
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   email: {
     type: DataTypes.TEXT,
+    allowNull: false
   },
   subject: {
-    type: DataTypes.TEXT
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   message: {
     type: DataTypes.TEXT,
+    allowNull: false
   },
 })
 

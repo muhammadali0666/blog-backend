@@ -9,11 +9,13 @@ const Users = sequelize.define("auth", {
   },
 
   fullName: {
-    type: DataTypes.TEXT
+    type: DataTypes.TEXT,
+    allowNull: false
   },
   email: {
     type: DataTypes.TEXT,
-    unique: true
+    unique: true,
+    allowNull: false
   },
   profilePhoto: {
     type: DataTypes.TEXT

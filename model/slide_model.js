@@ -9,6 +9,7 @@ const Slides = sequelize.define("slides", {
   },
   img: {
     type: DataTypes.TEXT,
+    allowNull: false
   },
 });
 

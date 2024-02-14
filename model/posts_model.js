@@ -9,12 +9,15 @@ const Posts = sequelize.define("posts", {
   },
   title: {
     type: DataTypes.TEXT,
+    allowNull: false
   },
   text: {
     type: DataTypes.TEXT,
+    allowNull: false
   },
   img: {
     type: DataTypes.TEXT,
+    allowNull: false
   },
 });
 
