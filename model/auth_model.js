@@ -15,7 +15,6 @@ const Users = sequelize.define("auth", {
   email: {
     type: DataTypes.TEXT,
     unique: true,
-    allowNull: false
   },
   profilePhoto: {
     type: DataTypes.TEXT
