@@ -21,10 +21,8 @@ const authRegister = async (req, res) => {
     return res.status(201).send({
       msg: "Registered!",
     });
-  } catch (err) {
-    return res.send({
-      msg: err.message,
-    });
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 
@@ -71,10 +69,8 @@ const authLogin = async (req, res) => {
         msg: "Name wrong",
       });
     }
-  } catch (err) {
-    res.send({
-      msg: err.message,
-    });
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 

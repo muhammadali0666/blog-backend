@@ -3,30 +3,34 @@ const { Imgs } = require("../model");
 Imgs.sync({ force: false });
 
 const getImgs = async (req, res) => {
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
+  try {
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
 
-  const imgs = await Imgs.findAll();
+    const imgs = await Imgs.findAll();
 
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
-  const results = {};
+    const results = {};
 
-  if (endIndex < imgs.length) {
-    results.next = {
-      page: page + 1,
-      limit: limit,
-    };
+    if (endIndex < imgs.length) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    if (startIndex > 0) {
+      results.prev = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+    results.results = imgs.slice(startIndex, endIndex);
+    return res.json(results);
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
   }
-  if (startIndex > 0) {
-    results.prev = {
-      page: page - 1,
-      limit: limit,
-    };
-  }
-  results.results = imgs.slice(startIndex, endIndex);
-  return res.json(results);
 };
 
 const createImg = async (req, res) => {
@@ -38,9 +42,7 @@ const createImg = async (req, res) => {
       message: "created img",
     });
   } catch (error) {
-    return res.send({
-      message: error.message,
-    });
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 
@@ -62,9 +64,7 @@ const editImg = async (req, res) => {
 
     return res.send(updatedImg.filter((e) => e));
   } catch (error) {
-    return res.send({
-      message: error.message,
-    });
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 
@@ -72,12 +72,12 @@ const deleteImg = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const foundedId = await Imgs.findOne({where: {id: id}})
+    const foundedId = await Imgs.findOne({ where: { id: id } });
 
-    if(!foundedId){
+    if (!foundedId) {
       return res.send({
-        message: "img not found"
-      })
+        message: "img not found",
+      });
     }
 
     await Imgs.destroy({
@@ -90,10 +90,8 @@ const deleteImg = async (req, res) => {
     return res.send({
       msg: "deleted img!",
     });
-  } catch (err) {
-    return res.send({
-      msg: err.message,
-    });
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 
@@ -101,5 +99,5 @@ module.exports = {
   getImgs,
   createImg,
   editImg,
-  deleteImg
+  deleteImg,
 };

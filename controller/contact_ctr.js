@@ -2,9 +2,13 @@ const { Contacts } = require("../model");
 
 Contacts.sync({ force: false });
 
-const getContacts = async (req, res) => { 
-  const contacts = await Contacts.findAll();
-  return res.json(contacts);
+const getContacts = async (req, res) => {
+  try {
+    const contacts = await Contacts.findAll();
+    return res.json(contacts);
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
+  }
 };
 
 const createContact = async (req, res) => {
@@ -16,9 +20,7 @@ const createContact = async (req, res) => {
       message: "created contact",
     });
   } catch (error) {
-    return res.send({
-      message: error.message,
-    });
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 const editContact = async (req, res) => {
@@ -39,9 +41,7 @@ const editContact = async (req, res) => {
 
     return res.send(updatedContact.filter((e) => e));
   } catch (error) {
-    return res.send({
-      message: error.message,
-    });
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 const deleteContact = async (req, res) => {
@@ -66,10 +66,8 @@ const deleteContact = async (req, res) => {
     return res.send({
       msg: "deleted contact!",
     });
-  } catch (err) {
-    return res.send({
-      msg: err.message,
-    });
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 

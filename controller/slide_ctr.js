@@ -3,8 +3,12 @@ const { Slides } = require("../model");
 Slides.sync({ force: false });
 
 const getSlides = async (_, res) => {
-  const posts = await Slides.findAll();
-  return res.json(posts);
+  try {
+    const posts = await Slides.findAll();
+    return res.json(posts);
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
+  }
 };
 const createSlide = async (req, res) => {
   try {
@@ -22,9 +26,7 @@ const createSlide = async (req, res) => {
       message: "created slide",
     });
   } catch (error) {
-    return res.send({
-      message: error.message,
-    });
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 
@@ -46,9 +48,7 @@ const editSlide = async (req, res) => {
 
     return res.send(updatedImg.filter((e) => e));
   } catch (error) {
-    return res.send({
-      message: error.message,
-    });
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 
@@ -74,10 +74,8 @@ const deleteSlide = async (req, res) => {
     return res.send({
       msg: "deleted slide!",
     });
-  } catch (err) {
-    return res.send({
-      msg: err.message,
-    });
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 

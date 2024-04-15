@@ -3,30 +3,34 @@ const { Posts } = require("../model");
 Posts.sync({ force: false });
 
 const getPosts = async (req, res) => {
-  const page = parseInt(req.query.page);
-  const limit = parseInt(req.query.limit);
+  try {
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
 
-  const posts = await Posts.findAll();
+    const posts = await Posts.findAll();
 
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
 
-  const results = {};
+    const results = {};
 
-  if (endIndex < posts.length) {
-    results.next = {
-      page: page + 1,
-      limit: limit,
-    };
+    if (endIndex < posts.length) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    if (startIndex > 0) {
+      results.prev = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+    results.results = posts.slice(startIndex, endIndex);
+    return res.json(results);
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
   }
-  if (startIndex > 0) {
-    results.prev = {
-      page: page - 1,
-      limit: limit,
-    };
-  }
-  results.results = posts.slice(startIndex, endIndex);
-  return res.json(results);
 };
 const getOnePosts = async (req, res) => {
   try {
@@ -36,9 +40,7 @@ const getOnePosts = async (req, res) => {
 
     return res.json(post);
   } catch (error) {
-    return res.send({
-      message: error.message,
-    });
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 const createPosts = async (req, res) => {
@@ -50,9 +52,7 @@ const createPosts = async (req, res) => {
       message: "created post",
     });
   } catch (error) {
-    return res.send({
-      message: error.message,
-    });
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 
@@ -74,9 +74,7 @@ const editPost = async (req, res) => {
 
     return res.send(updatedPost.filter((e) => e));
   } catch (error) {
-    return res.send({
-      message: error.message,
-    });
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 
@@ -102,10 +100,8 @@ const deletePosts = async (req, res) => {
     return res.send({
       msg: "deleted post!",
     });
-  } catch (err) {
-    return res.send({
-      msg: err.message,
-    });
+  } catch (error) {
+    return res.status(400).json({ error: "My custom 400 error" });
   }
 };
 
